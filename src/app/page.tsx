@@ -16,7 +16,6 @@ export default function Home() {
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
         setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
       });
     });
   }
@@ -24,11 +23,11 @@ export default function Home() {
   const doSearch = () => {
     setFilteredAdvocates(advocates.filter((advocate) => {
       return (
-        advocate.firstName.includes(searchText) ||
-        advocate.lastName.includes(searchText) ||
-        advocate.city.includes(searchText) ||
-        advocate.degree.includes(searchText) ||
-        advocate.specialties.includes(searchText)
+        advocate.firstName.toLowerCase().includes(searchText) ||
+        advocate.lastName.toLowerCase().includes(searchText) ||
+        advocate.city.toLowerCase().includes(searchText) ||
+        advocate.degree.toLowerCase().includes(searchText) ||
+        advocate.specialties.some((specialty) => specialty.toLowerCase().includes(searchText))
       );
     }));
   }
@@ -39,7 +38,7 @@ export default function Home() {
   }, []);
 
   const onChange = (e) => {
-    setSearchText(e.target.value)
+    setSearchText(e.target.value.toLowerCase())
     console.log("filtering advocates...");
 
     // Add debouncing to keep from spamming updates while user is typing
