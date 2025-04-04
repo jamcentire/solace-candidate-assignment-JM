@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Advocate } from "./types"
+import "./tableComponents.css"
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
@@ -70,13 +71,15 @@ export default function Home() {
       <br />
       <table>
         <thead className="tableHeaderRow">
-          <td>First Name</td>
-          <td>Last Name</td>
-          <td>City</td>
-          <td>Degree</td>
-          <td>Specialties</td>
-          <td>Years of Experience</td>
-          <td>Phone Number</td>
+          <tr>
+            <td className="headerCell">First Name</td>
+            <td className="headerCell">Last Name</td>
+            <td className="headerCell">City</td>
+            <td className="headerCell">Degree</td>
+            <td className="headerCell">Specialties</td>
+            <td className="headerCell">Years of Experience</td>
+            <td className="headerCell">Phone Number</td>
+          </tr>
         </thead>
         <tbody>
           {filteredAdvocates.map((advocate) => {
