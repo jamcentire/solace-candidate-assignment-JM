@@ -16,6 +16,7 @@ export default function Home() {
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
         setAdvocates(jsonResponse.data);
+        setFilteredAdvocates(jsonResponse.data);
       });
     });
   }
@@ -55,7 +56,7 @@ export default function Home() {
 
   return (
     <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
+      <h1 className="pageHeader">Solace Advocates</h1>
       <br />
       <br />
       <div>
@@ -64,7 +65,7 @@ export default function Home() {
           Searching for: <span id="search-term"></span>
         </p>
         <input style={{ border: "1px solid black" }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
+        <button className="resetButton" onClick={onClick}>Refresh Data</button>
       </div>
       <br />
       <br />
@@ -84,17 +85,17 @@ export default function Home() {
           {filteredAdvocates.map((advocate) => {
             return (
               <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
+                <td className="bodyCell">{advocate.firstName}</td>
+                <td className="bodyCell">{advocate.lastName}</td>
+                <td className="bodyCell">{advocate.city}</td>
+                <td className="bodyCell">{advocate.degree}</td>
+                <td className="bodyCell">
                   {advocate.specialties.map((s) => (
                     <div>{s}</div>
                   ))}
                 </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
+                <td className="bodyCell">{advocate.yearsOfExperience}</td>
+                <td className="bodyCell">{advocate.phoneNumber}</td>
               </tr>
             );
           })}
