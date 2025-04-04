@@ -57,14 +57,14 @@ export default function Home() {
       <br />
       <br />
       <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
+        <thead className="tableHeaderRow">
+          <td>First Name</td>
+          <td>Last Name</td>
+          <td>City</td>
+          <td>Degree</td>
+          <td>Specialties</td>
+          <td>Years of Experience</td>
+          <td>Phone Number</td>
         </thead>
         <tbody>
           {filteredAdvocates.map((advocate) => {
