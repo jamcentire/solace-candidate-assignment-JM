@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Advocate } from "./types"
 
 export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [advocates, setAdvocates] = useState<Advocate[]>([]);
+  const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
 
-  useEffect(() => {
+  const refreshAdvocates = () => {
     console.log("fetching advocates...");
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
@@ -14,6 +15,11 @@ export default function Home() {
         setFilteredAdvocates(jsonResponse.data);
       });
     });
+  }
+
+  useEffect(() => {
+    console.log("fetching advocates...");
+    refreshAdvocates();
   }, []);
 
   const onChange = (e) => {
@@ -22,23 +28,20 @@ export default function Home() {
     document.getElementById("search-term").innerHTML = searchTerm;
 
     console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
+    setFilteredAdvocates(advocates.filter((advocate) => {
       return (
         advocate.firstName.includes(searchTerm) ||
         advocate.lastName.includes(searchTerm) ||
         advocate.city.includes(searchTerm) ||
         advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
+        advocate.specialties.includes(searchTerm)
       );
-    });
-
-    setFilteredAdvocates(filteredAdvocates);
+    }));
   };
 
   const onClick = () => {
     console.log(advocates);
-    setFilteredAdvocates(advocates);
+    refreshAdvocates();
   };
 
   return (
