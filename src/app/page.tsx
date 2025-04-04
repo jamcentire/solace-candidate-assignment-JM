@@ -6,6 +6,9 @@ import { Advocate } from "./types"
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
+  let timeoutId: any;
+  const debounceTime = 200 // debounce time for search in ms
 
   const refreshAdvocates = () => {
     console.log("fetching advocates...");
@@ -17,26 +20,32 @@ export default function Home() {
     });
   }
 
+  const doSearch = () => {
+    setFilteredAdvocates(advocates.filter((advocate) => {
+      return (
+        advocate.firstName.includes(searchText) ||
+        advocate.lastName.includes(searchText) ||
+        advocate.city.includes(searchText) ||
+        advocate.degree.includes(searchText) ||
+        advocate.specialties.includes(searchText)
+      );
+    }));
+  }
+
   useEffect(() => {
     console.log("fetching advocates...");
     refreshAdvocates();
   }, []);
 
   const onChange = (e) => {
-    const searchTerm = e.target.value;
-
-    document.getElementById("search-term").innerHTML = searchTerm;
-
+    setSearchText(e.target.value)
     console.log("filtering advocates...");
-    setFilteredAdvocates(advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm)
-      );
-    }));
+
+    // Add debouncing to keep from spamming updates while user is typing
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(doSearch, debounceTime)
   };
 
   const onClick = () => {
